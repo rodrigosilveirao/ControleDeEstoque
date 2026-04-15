@@ -3,17 +3,33 @@ public class Produto {
     private int quantidade;
     private float preco;
 
+
+
+
     public void adicionarEstoque(int qtd){
         this.quantidade += qtd;
     }
 
-    public void removerEstoque(int qtd){
-        if (quantidade <= 0){
-            System.out.println("Sem produto no momento");
-        } else {
+
+
+
+
+
+
+    public boolean removerEstoque(int qtd){
+        if (this.quantidade >= qtd){
             this.quantidade -= qtd;
+            return true;
+        } else {
+            return false;
         }
     }
+
+
+
+
+
+
 
     public String toString(){
         return "Produto: " + nome +  " | Quantidade:" + quantidade + " | Preco: R$" + preco;
@@ -26,8 +42,6 @@ public class Produto {
             System.out.println(" Preco invalido! ");
         }
     }
-
-
 
 
     public String getNome() {
@@ -43,7 +57,7 @@ public class Produto {
     }
 
     public Produto(String nome, int quantidade, float preco) {
-        this.nome = nome;
+        this.nome = nome.trim();
         this.quantidade = quantidade;
         this.preco = preco;
     }

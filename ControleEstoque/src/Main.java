@@ -13,23 +13,48 @@ public class Main {
             System.out.println("4 - Adicionar produto");
             System.out.println("5 - Diminuir produto ");
             System.out.println("6 - Alterar preco");
-            System.out.println("7 - Sair");
+            System.out.println("7 - Buscar produto por nome");
+            System.out.println("8 - Relatorio de estoque baixo");
+            System.out.println("9 - Sair");
 
-            int opcao = s.nextInt();
-            s.nextLine();
+            int opcao = 0;
+            try {
+                opcao = s.nextInt();
+                s.nextLine();
+
+            } catch (Exception e) {
+                System.out.println("❌ Erro: Por favor, digite apenas números!");
+                s.nextLine();
+                continue;
+            }
 
             switch (opcao){
                 case 1:
                 System.out.println("Nome: ");
                 String nome = s.nextLine() ;
 
-                System.out.println("Quantidade: ");
-                int quantidade = s.nextInt();
 
-                System.out.println("Preco: ");
-                float preco = s.nextFloat();
+                try {
 
-                estoque.adicionarProduto(new Produto(nome,quantidade,preco));
+                    System.out.println("Quantidade: ");
+                    int quantidade = s.nextInt();
+
+                    System.out.println("Preco: ");
+                    float preco = s.nextFloat();
+
+                    boolean deuCerto = estoque.adicionarProduto(new Produto(nome,quantidade,preco));
+                    if (deuCerto) {
+                        System.out.println("✅ Produto cadastrado com sucesso!");
+                    } else {
+                        System.out.println("❌ Erro: O produto já existe no estoque.");
+                    }
+
+                } catch (Exception e){
+                    System.out.println("❌ Erro: Quantidade e preço precisam ser números!");
+                    s.nextLine();
+                    break;
+                }
+
 
                 break;
 
@@ -42,23 +67,30 @@ public class Main {
                     System.out.println("----- Digite o nome do produto para remover: ------ \n");
                 String nomeRemover = s.nextLine();
                 estoque.removerProduto(nomeRemover);
+                    estoque.salvarAlteracoes();
                 break;
 
 
                 case 4:
                     System.out.println(" Digite o produto para alterar quantidade: ");
                     String nomeAlterar = s.nextLine();
-                    Produto produtoEncontrado = estoque.listarProdutos(nomeAlterar);
+                    try {
+                        Produto produtoEncontrado = estoque.listarProdutos(nomeAlterar);
 
-                    if (produtoEncontrado != null) {
-                        System.out.println("Digite a quantidade que deseja alterar: ");
-                        int qtd = s.nextInt();
+                        if (produtoEncontrado != null) {
+                            System.out.println("Digite a quantidade que deseja alterar: ");
+                            int qtd = s.nextInt();
+                            s.nextLine();
+
+                            produtoEncontrado.adicionarEstoque(qtd);
+                            estoque.salvarAlteracoes();
+
+                        } else {
+                            System.out.println("Sem produto no estoque. ");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("❌ Erro grave");
                         s.nextLine();
-
-                        produtoEncontrado.adicionarEstoque(qtd);
-
-                    } else {
-                        System.out.println("Sem produto no estoque. ");
                     }
                     break;
 
@@ -68,11 +100,22 @@ public class Main {
                     Produto produtoParaDiminuir= estoque.listarProdutos(nomeDiminuir);
 
                     if (produtoParaDiminuir != null) {
-                        System.out.println("Digite a quantidade que deseja alterar: ");
-                        int qtd = s.nextInt();
-                        s.nextLine();
+                      try {
+                          System.out.println("Digite a quantidade que deseja alterar: ");
+                          int qtd = s.nextInt();
+                          s.nextLine();
 
-                        produtoParaDiminuir.removerEstoque(qtd);
+                          boolean conseguiu = produtoParaDiminuir.removerEstoque(qtd);
+                          if (conseguiu) {
+                              estoque.salvarAlteracoes();
+                              System.out.println("✅ Atualizado com sucesso.");
+                          } else {
+                              System.out.println("❌ Erro: Sem produtos suficientes para diminuir. Voce só tem " + produtoParaDiminuir.getQuantidade() + " unidades.");
+                          }
+                      } catch (Exception e) {
+                          System.out.println("❌ Erro: Digite apenas números válidos!");
+                          s.nextLine();
+                      }
 
                     } else {
                         System.out.println("Sem produto no estoque. ");
@@ -82,21 +125,40 @@ public class Main {
                 case 6:
                     System.out.println("------- Digite o produto a ser alterado o preco ------");
                     String precoAlterar = s.nextLine();
-                    Produto produtoPreco = estoque.listarProdutos(precoAlterar);
+                    try {
+                        Produto produtoPreco = estoque.listarProdutos(precoAlterar);
 
-                    if (produtoPreco != null) {
-                        System.out.println("Digite o novo valor: ");
-                        float precoNovo = s.nextFloat();
+                        if (produtoPreco != null) {
+                            System.out.println("Digite o novo valor: ");
+                            float precoNovo = s.nextFloat();
+                            s.nextLine();
+
+                            produtoPreco.alterarPreco(precoNovo);
+                            estoque.salvarAlteracoes();
+                        } else {
+                            System.out.println("Sem produto! ");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("❌ Erro");
                         s.nextLine();
-
-                        produtoPreco.alterarPreco(precoNovo);
-
-                    } else {
-                        System.out.println("Sem produto! ");
                     }
+                    break;
+
                 case 7:
+                    System.out.println(" --- Digite o produto desejado ou a palavra que contem nele: ---");
+                    String palavra = s.nextLine();
+                    estoque.buscarProdutoPorNome(palavra);
+
+                    break;
+
+                case 8:
+                    estoque.relatorioEstoqueBaixo();
+                    break;
+
+                case 9:
                     System.out.println("-- Saindo --");
                     System.exit(0);
+
                 default:
                     System.out.println("Comando invalido!");
                     break;

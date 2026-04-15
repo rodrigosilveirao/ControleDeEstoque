@@ -6,13 +6,55 @@ public class Estoque {
     private List<Produto> produtos = new ArrayList<>();
     private EstoqueRepository repository = new EstoqueRepository();
 
-    public void adicionarProduto(Produto novo){
+    public void relatorioEstoqueBaixo(){
+        System.out.println("---- Relatorio de estoque baixo: ---- Menores que 2 no estoque");
+        boolean temProdutoAcabando = false;
+
         for (Produto p : produtos){
-            if (p.getNome().equalsIgnoreCase(novo.getNome())){
-                return;
+            if (p.getQuantidade() <= 2){
+                System.out.println(p.getNome() + " esta acabando com : " + p.getQuantidade() + " produtos.");
+                temProdutoAcabando = true;
             }
         }
+        if (temProdutoAcabando == false) {
+            System.out.println("✅ Tudo tranquilo! Nenhum produto acabando.");
+        }
+    }
+
+    public void buscarProdutoPorNome(String palavraChave){
+        boolean encontrouAlgum = false;
+        System.out.println("------ Resultado da busca por: " + palavraChave + " ------");
+        for (Produto p : produtos){
+            if (p.getNome().toLowerCase().contains(palavraChave.toLowerCase())){
+                System.out.println(p.toString());
+                encontrouAlgum = true;
+            }
+        }
+        if (encontrouAlgum == false){
+            System.out.println("Nenhum produto encontrado!");
+        }
+    }
+
+
+    public void salvarAlteracoes (){
+        repository.salvar(produtos);
+    }
+
+
+    public Estoque() {
+        this.produtos = repository.carregar();
+    }
+
+    public boolean adicionarProduto(Produto novo){
+        for (Produto p : produtos){
+            if (p.getNome().equalsIgnoreCase(novo.getNome())){
+                return false;
+            }
+        }
+
         produtos.add(novo);
+        repository.salvar(produtos);
+        return true;
     }
 
     public void listarProdutos(){

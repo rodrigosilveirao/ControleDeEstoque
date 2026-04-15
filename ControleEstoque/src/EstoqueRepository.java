@@ -1,14 +1,17 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class EstoqueRepository {
     private final String NOME_ARQUIVO = "estoque_propickup.txt";
 
-    public boolean salvar (ArrayList<Produto> listaDeProdutos){
+    public boolean salvar (List<Produto> listaDeProdutos){
 
         try(BufferedWriter escritor = new BufferedWriter(new FileWriter(NOME_ARQUIVO))){
+
+            System.out.println("📁 Arquivo salvo no Mac em: " + new java.io.File(NOME_ARQUIVO).getAbsolutePath());
+
+
             for (Produto p : listaDeProdutos){
                 String linha = p.getNome() + "|" + p.getQuantidade() + "|" + p.getPreco();
                 escritor.write(linha);
@@ -22,9 +25,23 @@ public class EstoqueRepository {
     }
 
 
+    public List<Produto> carregar() {
+        List<Produto> produtosCarregados = new ArrayList<>();
 
+        try (BufferedReader leitor = new BufferedReader(new FileReader(NOME_ARQUIVO))) {
+            String linha;
+            while ((linha = leitor.readLine()) != null) {
+                String[] partes = linha.split("\\|");
 
+                String nome = partes[0];
+                int qtd = Integer.parseInt(partes[1]);
+                float preco = Float.parseFloat(partes[2]);
 
-
-
+                produtosCarregados.add(new Produto(nome, qtd, preco));
+            }
+        } catch (IOException erro) {
+            System.out.println("⚠️ Nenhum arquivo de estoque anterior encontrado. Iniciando um novo...");
+        }
+        return produtosCarregados;
+    }
 }
