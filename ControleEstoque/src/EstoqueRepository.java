@@ -13,7 +13,14 @@ public class EstoqueRepository {
 
 
             for (Produto p : listaDeProdutos){
-                String linha = p.getNome() + "|" + p.getQuantidade() + "|" + p.getPreco();
+                String linha;
+                if (p instanceof Eletronico){
+                    Eletronico e = (Eletronico) p;
+                     linha = "ELETRONICO|" + p.getNome() + "|" + p.getQuantidade() + "|" + p.getPreco() + "|" + e.getGarantia();
+                } else {
+                     linha = "COMUM|" + p.getNome() + "|" + p.getQuantidade() + "|" + p.getPreco();
+
+                }
                 escritor.write(linha);
                 escritor.newLine();
             }
@@ -33,11 +40,17 @@ public class EstoqueRepository {
             while ((linha = leitor.readLine()) != null) {
                 String[] partes = linha.split("\\|");
 
-                String nome = partes[0];
-                int qtd = Integer.parseInt(partes[1]);
-                float preco = Float.parseFloat(partes[2]);
 
-                produtosCarregados.add(new Produto(nome, qtd, preco));
+                String tipo = partes[0];
+                String nome = partes[1];
+                int qtd = Integer.parseInt(partes[2]);
+                float preco = Float.parseFloat(partes[3]);
+                if (tipo.equals("ELETRONICO")) {
+                    int garantia = Integer.parseInt(partes[4]);
+                    produtosCarregados.add(new Eletronico(nome, qtd, preco, garantia));
+                }else {
+                    produtosCarregados.add(new Produto(nome, qtd, preco));
+                }
             }
         } catch (IOException erro) {
             System.out.println("⚠️ Nenhum arquivo de estoque anterior encontrado. Iniciando um novo...");

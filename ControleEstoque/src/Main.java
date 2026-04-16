@@ -28,35 +28,63 @@ public class Main {
                 continue;
             }
 
+
             switch (opcao){
                 case 1:
-                System.out.println("Nome: ");
-                String nome = s.nextLine() ;
-
-
+                    System.out.println(" Produto comum [1] ou Produto eletronico [2]");
                 try {
+                    int escolha = s.nextInt();
+                    s.nextLine();
+                    if (escolha == 1 ){
+                        System.out.println("Nome: ");
+                        String nome = s.nextLine() ;
 
-                    System.out.println("Quantidade: ");
-                    int quantidade = s.nextInt();
+                        System.out.println("Quantidade: ");
+                        int quantidade = s.nextInt();
 
-                    System.out.println("Preco: ");
-                    float preco = s.nextFloat();
+                        System.out.println("Preco: ");
+                        float preco = s.nextFloat();
 
-                    boolean deuCerto = estoque.adicionarProduto(new Produto(nome,quantidade,preco));
-                    if (deuCerto) {
-                        System.out.println("✅ Produto cadastrado com sucesso!");
+                        boolean deuCerto = estoque.adicionarProduto(new Produto(nome,quantidade,preco));
+                        if (deuCerto) {
+                            System.out.println("✅ Produto cadastrado com sucesso!");
+                            estoque.salvarAlteracoes();
+
+                        } else {
+                            System.out.println("❌ Erro: O produto já existe no estoque.");
+                        }
                     } else {
-                        System.out.println("❌ Erro: O produto já existe no estoque.");
+                        System.out.println("Nome: ");
+                        String nome = s.nextLine() ;
+
+                        System.out.println("Quantidade: ");
+                        int quantidade = s.nextInt();
+
+                        System.out.println("Preco: ");
+                        float preco = s.nextFloat();
+
+                        System.out.println("Meses de garantia");
+                        int garantia = s.nextInt();
+
+                        boolean deuCerto = estoque.adicionarProduto(new Eletronico(nome,quantidade,preco,garantia));
+                        if (deuCerto) {
+                            System.out.println("✅ Produto cadastrado com sucesso!");
+                            estoque.salvarAlteracoes();
+
+                        } else {
+                            System.out.println("❌ Erro: O produto já existe no estoque.");
+                        }
                     }
 
                 } catch (Exception e){
                     System.out.println("❌ Erro: Quantidade e preço precisam ser números!");
                     s.nextLine();
-                    break;
                 }
+                    estoque.salvarAlteracoes();
+
+                    break;
 
 
-                break;
 
                 case 2:
                     System.out.println("----- Produtos: ------ \n");

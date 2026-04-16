@@ -1,3 +1,2 @@
-calota|3|100.0
-som|-1|300.0
-calota 2|123|123.0
+COMUM |calota|1|1.0
+ELETRONICO|mac|2|2.0|2
