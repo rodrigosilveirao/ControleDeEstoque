@@ -1,10 +1,13 @@
-public class Produto {
+public class Produto implements Persistivel {
     private String nome;
     private int quantidade;
-    private float preco;
+    private double preco;
 
 
-
+    @Override
+    public String formatarParaLinha() {
+        return "COMUM|" + nome + "|" + quantidade + "|" + preco;
+    }
 
     public void adicionarEstoque(int qtd){
         this.quantidade += qtd;
@@ -32,10 +35,10 @@ public class Produto {
 
 
     public String toString(){
-        return "Produto: " + nome +  " | Quantidade:" + quantidade + " | Preco: R$" + preco;
+        return "Produto: " + nome +  " | Quantidade:" + quantidade +  " | Preco: " + String.format("R$%.2f", preco);
     }
 
-    public void alterarPreco(float novoPreco){
+    public void alterarPreco(double novoPreco){
         if (novoPreco > 0){
             this.preco = novoPreco;
         } else {
@@ -52,11 +55,11 @@ public class Produto {
         return quantidade;
     }
 
-    public float getPreco() {
+    public double getPreco() {
         return preco;
     }
 
-    public Produto(String nome, int quantidade, float preco) {
+    public Produto(String nome, int quantidade, double preco) {
         this.nome = nome.trim();
         this.quantidade = quantidade;
         this.preco = preco;

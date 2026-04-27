@@ -3,6 +3,7 @@ import java.util.List;
 
 public class Estoque {
 
+    private static final int limiteDeEstoqueBaixo = 2;
     private List<Produto> produtos = new ArrayList<>();
     private EstoqueRepository repository = new EstoqueRepository();
 
@@ -11,12 +12,12 @@ public class Estoque {
         boolean temProdutoAcabando = false;
 
         for (Produto p : produtos){
-            if (p.getQuantidade() <= 2){
+            if (p.getQuantidade() <= limiteDeEstoqueBaixo){
                 System.out.println(p.getNome() + " esta acabando com : " + p.getQuantidade() + " produtos.");
                 temProdutoAcabando = true;
             }
         }
-        if (temProdutoAcabando == false) {
+        if (!temProdutoAcabando) {
             System.out.println("✅ Tudo tranquilo! Nenhum produto acabando.");
         }
     }
@@ -30,7 +31,7 @@ public class Estoque {
                 encontrouAlgum = true;
             }
         }
-        if (encontrouAlgum == false){
+        if (!encontrouAlgum){
             System.out.println("Nenhum produto encontrado!");
         }
     }
@@ -53,7 +54,6 @@ public class Estoque {
         }
 
         produtos.add(novo);
-        repository.salvar(produtos);
         return true;
     }
 

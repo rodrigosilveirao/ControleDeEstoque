@@ -1,2 +1,3 @@
-COMUM |calota|1|1.0
-ELETRONICO|mac|2|2.0|2
+COMUM|calota|1|1.0
+Eletronico|mac|2|2.0
+Eletronico|iphone|3|123.0

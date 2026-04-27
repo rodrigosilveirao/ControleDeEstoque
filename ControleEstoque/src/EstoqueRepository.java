@@ -13,14 +13,7 @@ public class EstoqueRepository {
 
 
             for (Produto p : listaDeProdutos){
-                String linha;
-                if (p instanceof Eletronico){
-                    Eletronico e = (Eletronico) p;
-                     linha = "ELETRONICO|" + p.getNome() + "|" + p.getQuantidade() + "|" + p.getPreco() + "|" + e.getGarantia();
-                } else {
-                     linha = "COMUM|" + p.getNome() + "|" + p.getQuantidade() + "|" + p.getPreco();
-
-                }
+                String linha = p.formatarParaLinha();
                 escritor.write(linha);
                 escritor.newLine();
             }

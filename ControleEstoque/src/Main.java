@@ -43,13 +43,11 @@ public class Main {
                         int quantidade = s.nextInt();
 
                         System.out.println("Preco: ");
-                        float preco = s.nextFloat();
+                        double preco = s.nextDouble();
 
                         boolean deuCerto = estoque.adicionarProduto(new Produto(nome,quantidade,preco));
                         if (deuCerto) {
                             System.out.println("✅ Produto cadastrado com sucesso!");
-                            estoque.salvarAlteracoes();
-
                         } else {
                             System.out.println("❌ Erro: O produto já existe no estoque.");
                         }
@@ -61,7 +59,7 @@ public class Main {
                         int quantidade = s.nextInt();
 
                         System.out.println("Preco: ");
-                        float preco = s.nextFloat();
+                        double preco = s.nextDouble();
 
                         System.out.println("Meses de garantia");
                         int garantia = s.nextInt();
@@ -69,8 +67,6 @@ public class Main {
                         boolean deuCerto = estoque.adicionarProduto(new Eletronico(nome,quantidade,preco,garantia));
                         if (deuCerto) {
                             System.out.println("✅ Produto cadastrado com sucesso!");
-                            estoque.salvarAlteracoes();
-
                         } else {
                             System.out.println("❌ Erro: O produto já existe no estoque.");
                         }
@@ -158,7 +154,7 @@ public class Main {
 
                         if (produtoPreco != null) {
                             System.out.println("Digite o novo valor: ");
-                            float precoNovo = s.nextFloat();
+                            double precoNovo = s.nextDouble();
                             s.nextLine();
 
                             produtoPreco.alterarPreco(precoNovo);

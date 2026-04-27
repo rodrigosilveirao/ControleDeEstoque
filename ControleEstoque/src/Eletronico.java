@@ -1,7 +1,12 @@
 public class Eletronico extends Produto{
     private int garantia;
 
-    public Eletronico(String nome, int quantidade, float preco, int garantia) {
+    @Override
+    public String formatarParaLinha() {
+        return "ELETRONICO|" + getNome() + "|" + getQuantidade() + "|" + getPreco() + "|" + getGarantia();
+    }
+
+    public Eletronico(String nome, int quantidade, double preco, int garantia) {
         super(nome, quantidade, preco);
         this.garantia = garantia;
 
